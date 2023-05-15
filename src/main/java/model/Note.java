@@ -1,10 +1,5 @@
 package model;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,6 +13,14 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+
+import java.io.Serializable;
+import java.util.Date;
+
 @Entity
 @Table(name = "notes")
 @EntityListeners(AuditingEntityListener.class)
@@ -28,10 +31,10 @@ public class Note implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    
     private String title;
 
-    @NotBlank
+  
     private String content;
 
     @Column(nullable = false, updatable = false)
@@ -86,3 +89,18 @@ public class Note implements Serializable {
 
    
 }
+
+//@JsonIgnoreProperties annotation is a Jackson annotation. Spring Boot uses Jackson for Serializing and Deserializing Java objects to and from JSON.
+//This annotation is used because we don’t want the clients of the rest api to supply the createdAt and updatedAt values. If they supply these values then we’ll simply ignore them. However, we’ll include these values in the JSON response.
+//
+//All your domain models must be annotated with @Entity annotation. It is used to mark the class as a persistent Java class.
+//
+//@Table annotation is used to provide the details of the table that this entity will be mapped to.
+//
+//@Id annotation is used to define the primary key.
+//
+//@GeneratedValue annotation is used to define the primary key generation strategy. In the above case, we have declared the primary key to be an Auto Increment field.
+//
+//@NotBlank annotation is used to validate that the annotated field is not null or empty.
+//
+//@Column annotation is used to define the properties of the column that will be mapped to the annotated field. 
